@@ -50,6 +50,70 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: Row(
+        children: [
+          SafeArea(
+            child: NavigationRail(
+              extended: false,
+              destinations: [
+                NavigationRailDestination(
+                  icon: Icon(Icons.home),
+                  label: Text('Inicio'),
+                ),
+                NavigationRailDestination(
+                  icon: Icon(Icons.favorite),
+                  label: Text('favoritos')
+                )
+              ],
+              selectedIndex: 0,
+              onDestinationSelected: (value) {
+                print('Seleccion: $value');
+              },
+            ),
+          ),
+          Expanded(
+            child: Container(
+              color: Theme.of(context).colorScheme.primaryContainer,
+              child: GenratorPage(),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class BigCard extends StatelessWidget {
+  final WordPair idea;
+  const BigCard({super.key, required this.idea});
+
+  @override
+  Widget build(BuildContext context) {
+    final tema = Theme.of(context);
+    final textStyle = tema.textTheme.displayMedium!.copyWith(
+
+      color: tema.colorScheme.onPrimary,
+    );
+    return Card(
+      color: tema.primaryColor,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Text(
+          idea.asLowerCase, 
+          style: textStyle,
+          semanticsLabel: "${idea.first} ${idea.second}",
+        ),
+      ),
+    );
+  }
+}
+
+class GenratorPage extends StatelessWidget {
+  const GenratorPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     var idea = appState.current;
     IconData icon;
@@ -58,8 +122,7 @@ class MyHomePage extends StatelessWidget {
     } else {
       icon = Icons.favorite_border_outlined;
     }
-    return Scaffold(
-      body: Center(
+    return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -88,32 +151,6 @@ class MyHomePage extends StatelessWidget {
             )
           ],
         ),
-      ),
-    );
-  }
-}
-
-class BigCard extends StatelessWidget {
-  final WordPair idea;
-  const BigCard({super.key, required this.idea});
-
-  @override
-  Widget build(BuildContext context) {
-    final tema = Theme.of(context);
-    final textStyle = tema.textTheme.displayMedium!.copyWith(
-
-      color: tema.colorScheme.onPrimary,
-    );
-    return Card(
-      color: tema.primaryColor,
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Text(
-          idea.asLowerCase, 
-          style: textStyle,
-          semanticsLabel: "${idea.first} ${idea.second}",
-        ),
-      ),
-    );
+      );
   }
 }
