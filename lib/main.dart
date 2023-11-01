@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -61,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget page;
     switch (selectedIndex) {
       case 0: page = GenratorPage(); break;
-      case 1: page = Placeholder(); break;
+      case 1: page = FavoritosPage(); break;
       default:
         throw UnimplementedError('No hay un widget para: $selectedIndex');
     }
@@ -174,5 +173,32 @@ class GenratorPage extends StatelessWidget {
           ],
         ),
       );
+  }
+}
+
+class FavoritosPage extends StatelessWidget {
+  const FavoritosPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    if (appState.favoritos.isEmpty) {
+      return Center(
+        child: Text('Aun no hay favoritos'),
+      );
+    }
+    return ListView(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: Text('se han elegido ${appState.favoritos.length} favoritos'),
+        ),
+        for (var idea in appState.favoritos) 
+          ListTile(
+            leading: Icon(Icons.favorite),
+            title: Text(idea.asLowerCase),
+          )
+      ],
+    );
   }
 }
